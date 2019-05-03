@@ -1,7 +1,7 @@
 ##########################################
 ### IMPORT PS MODULES
-Import-Module psPAS
-Import-Module CredentialRetriever
+Import-Module .\modules\pspete\psPAS
+Import-Module .\modules\pspete\CredentialRetriever
 Import-Module ActiveDirectory
 
 ##########################################

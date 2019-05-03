@@ -17,7 +17,8 @@ do { $acctScope = Read-Host "Create a [A]ctive Directory User or [L]ocal User?" 
 while ( $acctScope -notlike "L" -and $acctScope -notlike "A")
 
 # Ask for Configuration ID from CMDB of Application
-$cmdbConfigId = Read-Host "Enter the CMDB Configuration/Application ID"
+# This is a situational value -- only uncomment below if this is necessary for automation
+#$cmdbConfigId = Read-Host "Enter the CMDB Configuration/Application ID"
 
 # Ask for Account Owner ID
 $accountOwnerId = Read-Host "Enter the ID of the Account Owner"
@@ -42,7 +43,7 @@ function Show-Menu
 	 param ( 
 		   [string]$Title = 'Group Membership Menu' 
 	 ) 
-	 cls 
+	 Clear-Host 
 	 Write-Host "================ $Title ================" 
 	 
 	 Write-Host "A: Press 'a' to add Account to Group." 
@@ -101,10 +102,10 @@ switch($acctScope)
 				 switch ($input) 
 				 { 
 					   'a' { 
-							cls 
+							Clear-Host 
 							$groupNameAD = Read-Host 'Enter the AD Group Name you want to add the Account to'
 							Add-ADGroupMember -Identity $groupNameAD -Member $acctUsername
-							$members = Get-ADGroupMember -Identity $groupNameAD -Recursive | Select -ExpandProperty Name
+							$members = Get-ADGroupMember -Identity $groupNameAD -Recursive | Select-Object -ExpandProperty Name
 							If ($members -contains $acctUsername) {
 								  Write-Host "$acctUsername successfully added to $groupNameAD"
 							 } Else {
@@ -130,7 +131,7 @@ switch($acctScope)
 $caption = "CyberArk Account Factory"
 $msg = "Enter your Username and Password to Authenticate to CyberArk"; 
 $creds = $Host.UI.PromptForCredential($caption,$msg,"","")
-if ($creds -ne $null)
+if ($null -ne $creds)
 {
 	$secureUsername = $creds.username.Replace('\','');    
 	$securePassword = ConvertTo-SecureString $creds.GetNetworkCredential().password -AsPlainText -Force

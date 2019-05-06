@@ -1,8 +1,10 @@
 ##########################################
 ### IMPORT PS MODULES
-Import-Module .\modules\pspete\psPAS
-Import-Module .\modules\pspete\CredentialRetriever
+Import-Module psPAS
 Import-Module ActiveDirectory
+
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor [System.Net.SecurityProtocolType]::Tls12
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true}
 
 ##########################################
 ### RECEIVE USER INPUT
@@ -17,7 +19,9 @@ do { $acctScope = Read-Host "Create a [A]ctive Directory User or [L]ocal User?" 
 while ( $acctScope -notlike "L" -and $acctScope -notlike "A")
 
 # Ask for Configuration ID from CMDB of Application
+#########################################################################################
 # This is a situational value -- only uncomment below if this is necessary for automation
+#########################################################################################
 #$cmdbConfigId = Read-Host "Enter the CMDB Configuration/Application ID"
 
 # Ask for Account Owner ID
@@ -77,6 +81,7 @@ switch($acctScope)
     # Case 1: Active Directory User selected
     a {
         $acctAddress = Read-Host "Enter the Domain where you would like to create the Account (i.e. cyberarkdemo.com)"
+        #We need to change the message here - it's not "creating it in the domain, its setting a value of the domain - what do we want to do here?"
 		$acctPath = Read-Host "Enter the OU Path where you would like to create the Account (i.e. OU=Service Accounts,OU=CyberArk,DC=cyberarkdemo,DC=com)"
         
         # Creation of new AD User -- Be sure to update the Path argument for where you keep
@@ -104,7 +109,7 @@ switch($acctScope)
 					   'a' { 
 							Clear-Host 
 							$groupNameAD = Read-Host 'Enter the AD Group Name you want to add the Account to'
-							Add-ADGroupMember -Identity $groupNameAD -Member $acctUsername
+							Add-ADGroupMember -Identity $groupNameAD -Members $acctUsername
 							$members = Get-ADGroupMember -Identity $groupNameAD -Recursive | Select-Object -ExpandProperty Name
 							If ($members -contains $acctUsername) {
 								  Write-Host "$acctUsername successfully added to $groupNameAD"
@@ -128,6 +133,24 @@ switch($acctScope)
 ### LOG INTO THE PVWA - ROUND 1 (W/ END-USER CREDENTIALS)
 
 # Prompt for End-User's Credentials to Login to PVWA
+$getAuthType = Read-Host 'Please select your authentication type [1] LDAP [2] RADIUS [3] CyberArk'
+
+switch($getAuthType) {
+    1 {
+        $authType = "LDAP"
+    }
+    2 {
+        $authType = "RADIUS"
+    }
+    3 {
+        $authType = "CyberArk"
+    }
+    default {
+        Write-Output "Please enter a proper authentication type.  Quitting..."
+        Exit
+    }
+}
+
 $caption = "CyberArk Account Factory"
 $msg = "Enter your Username and Password to Authenticate to CyberArk"; 
 $creds = $Host.UI.PromptForCredential($caption,$msg,"","")
@@ -143,7 +166,7 @@ else {
 }
 try {
     # Establish session connection to CyberArk Web Services & receive Authorization Token
-    $token = New-PASSession -Credential $apiCredentials -BaseURI $baseURI  -ErrorAction Stop
+    $token = New-PASSession -Credential $apiCredentials -BaseURI $baseURI -type $authType -ErrorAction Stop
     Write-Output "`r`nSecurely logged into CyberArk Web Services using ${secureUsername}."
 } catch {
     Write-Output "`r`n[ ERROR ] Could not login to CyberArk Web Services. $($PSItem.ToString())"
@@ -155,10 +178,13 @@ try {
 ##########################################
 ### GET API CREDENTIALS FROM PVWA
 
-# Get CyberArk SVC Account that will onboard the privileged credential into the Vault
-$token | Get-PASAccount -Keywords 'x_admin' -Safe 'Windows Domain Admin' | Get-PASAccountPassword 
+$apiUsername = Read-Host 'Please enter the Username of the API credential'
+$apiSafe = Read-Host 'Please enter the Safe Name of the API credential'
 
-#Need to figure out how to get response back with password and set as a variable $apiCredentials2
+# Get CyberArk SVC Account that will onboard the privileged credential into the Vault
+$apiPassword = $token | Get-PASAccount -Keywords $apiUsername -Safe $apiSafe | Get-PASAccountPassword -UseV10API  
+$securePassword2 = ConvertTo-SecureString $apiPassword.Password -AsPlainText -Force
+$apiCredentials2 = New-Object System.Management.Automation.PSCredential($apiUsername, $securePassword2)
 
 $token | Close-PASSession
 
@@ -167,8 +193,8 @@ $token | Close-PASSession
 
 try {
     # Establish session connection to CyberArk Web Services & receive Authorization Token
-    $token2 = New-PASSession -Credential $apiCredentials2 -BaseURI $baseURI  -ErrorAction Stop
-    Write-Output "`r`nSecurely logged into CyberArk Web Services using ${secureUsername}."
+    $token2 = New-PASSession -Credential $apiCredentials2 -BaseURI $baseURI -ErrorAction Stop
+    Write-Output "`r`nSecurely logged into CyberArk Web Services using ${apiUsername}."
 } catch {
     Write-Output "`r`n[ ERROR ] Could not login to CyberArk Web Services. $($PSItem.ToString())"
     Write-Host -NoNewLine "`r`nPress any key to continue..." -ForegroundColor Cyan
@@ -180,7 +206,7 @@ try {
 ### ONBOARD ACCOUNT TO EPV
 
 $platformID = Read-Host "Enter the desired PlatformID to assign the Account to"
-$safeName = Read-Host "Enter the account description"
+$safeName = Read-Host "Enter the safe name you want to onboard the Account to"
 
 try {
     # Case 2: Local User selected - onboard to specified platformID

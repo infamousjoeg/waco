@@ -9,9 +9,15 @@ Import-Module ActiveDirectory
 ##########################################
 ### RECEIVE USER INPUT
 
-Write-Host "`r`n===============================" -ForegroundColor Yellow
-Write-Host "CyberArk Account Factory" -ForegroundColor Yellow
-Write-Host "===============================`r`n" -ForegroundColor Yellow
+Write-Host "    ██╗    ██╗ █████╗  ██████╗ ██████╗ " -ForegroundColor Cyan
+Write-Host "    ██║    ██║██╔══██╗██╔════╝██╔═══██╗" -ForegroundColor Cyan
+Write-Host "    ██║ █╗ ██║███████║██║     ██║   ██║" -ForegroundColor Cyan
+Write-Host "    ██║███╗██║██╔══██║██║     ██║   ██║" -ForegroundColor Cyan
+Write-Host "    ╚███╔███╔╝██║  ██║╚██████╗╚██████╔╝" -ForegroundColor Cyan
+Write-Host "     ╚══╝╚══╝ ╚═╝  ╚═╝ ╚═════╝ ╚═════╝ " -ForegroundColor Cyan
+Write-Host "============================================" -ForegroundColor Yellow
+Write-Host "Windows Account Creation & Onboarding (WACO)" -ForegroundColor Yellow
+Write-Host "============================================`r`n" -ForegroundColor Yellow
 
 # DO: Keep asking for AD or Local
 # UNTIL: A or L is chosen

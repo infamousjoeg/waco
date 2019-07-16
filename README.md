@@ -2,29 +2,25 @@
 
 ![](https://vignette.wikia.nocookie.net/animaniacs/images/0/0d/Wakko_Warner.png/revision/latest?cb=20130118164509)
 
-[![CyberArk: Not Ready](https://img.shields.io/badge/CyberArk-Ready-blue.svg)](https://cyberark.com) 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/498767efe6b44a3c869c9ebf5c7f4525)](https://www.codacy.com/app/infamousjoeg/cyberark-account-factory?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=infamousjoeg/cyberark-account-factory&amp;utm_campaign=Badge_Grade) 
-![GitHub stars](https://badgen.net/github/stars/infamousjoeg/cyberark-account-factory) ![License MIT](https://badgen.net/github/license/infamousjoeg/cyberark-account-factory)
+## Requirements
 
-## :computer: "On The Front Lines" (OTFL) Webinar
+* PowerShell
+* CyberArk Application Access Manager (AAM)
+* CyberArk PAS Web Services REST API
+* psPAS _[Linked below]_
+* Credential Retriever _[Linked below]_
 
-This script was created as part of CyberArk's On The Front Lines (OTFL) Insider's Webinar Series called _CyberArk REST API: From Start-to-Finish_ and is a project voted on by our CyberArk Champions community.
+## Video Walkthrough
 
-It is currently scheduled for Tuesday, November 6th at 9am EST & 2pm EST.
+[![View Video on YouTube](https://img.youtube.com/vi/C_F4z5GITws/0.jpg)](https://www.youtube.com/watch?v=C_F4z5GITws)
 
-You may register for it by following this link: [https://lp.cyberark.com/OTFL-2018.html](https://lp.cyberark.com/OTFL-2018.html)
-
-### :movie_camera: Video Webinar on YouTube
-
-[https://www.cyberark.com/otfl-videos/]
-
-## :robot: PowerShell Modules/Functions Used
+## PowerShell Modules/Functions Used
 
 * psPAS by pspete
   * [https://www.powershellgallery.com/packages/psPAS/2.3.0](https://www.powershellgallery.com/packages/psPAS/2.3.0)
 * CredentialRetriever by pspete
   * [https://www.powershellgallery.com/packages/CredentialRetriever/1.0.0](https://www.powershellgallery.com/packages/CredentialRetriever/1.0.0)
 
-## :key: Verification
+## PGP Verification
 
 [![infamousjoeg Keybase PGP Verification](https://badgen.net/keybase/pgp/infamousjoeg)](https://keybase.io/infamousjoeg)

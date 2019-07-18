@@ -8,7 +8,6 @@
 * CyberArk Application Access Manager (AAM)
 * CyberArk PAS Web Services REST API
 * psPAS _[Linked below]_
-* Credential Retriever _[Linked below]_
 
 ## Video Walkthrough
 
@@ -18,8 +17,6 @@
 
 * psPAS by pspete
   * [https://www.powershellgallery.com/packages/psPAS/2.3.0](https://www.powershellgallery.com/packages/psPAS/2.3.0)
-* CredentialRetriever by pspete
-  * [https://www.powershellgallery.com/packages/CredentialRetriever/1.0.0](https://www.powershellgallery.com/packages/CredentialRetriever/1.0.0)
 
 ## PGP Verification
 

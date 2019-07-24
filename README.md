@@ -13,6 +13,8 @@
 
 [Security at Inception: Best Practices for Managing the Credential Lifecycle with REST APIs and Automation](https://www.slideshare.net/JoeGarciaCISSP/security-at-inception-best-practices-for-managing-the-credential-lifecycle-with-rest-apis-and-automation)
 
+[![Security at Inception: Best Practices for Managing the Credential Lifecycle with REST APIs and Automation](https://image.slidesharecdn.com/security-at-inception-us-v4-190724190357/95/security-at-inception-best-practices-for-managing-the-credential-lifecycle-with-rest-apis-and-automation-1-638.jpg?cb=1563995279)](https://www.slideshare.net/JoeGarciaCISSP/security-at-inception-best-practices-for-managing-the-credential-lifecycle-with-rest-apis-and-automation)
+
 ## Video Walkthrough
 
 [![View Video on YouTube](https://img.youtube.com/vi/C_F4z5GITws/0.jpg)](https://www.youtube.com/watch?v=C_F4z5GITws)
